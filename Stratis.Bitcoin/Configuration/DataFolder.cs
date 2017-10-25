@@ -23,7 +23,7 @@ namespace Stratis.Bitcoin.Configuration
         /// <param name="settings">Node configuration.</param>
         public DataFolder(NodeSettings settings)
         {
-            string path = settings.DataDir;
+            string path = this.BasePath = settings.DataDir;
             this.CoinViewPath = Path.Combine(path, "coinview");
             this.AddrManFile = Path.Combine(path, "addrman.dat");
             this.ChainPath = Path.Combine(path, "chain");
@@ -95,5 +95,7 @@ namespace Stratis.Bitcoin.Configuration
             get;
             internal set;
         }
+
+        public string BasePath { get; internal set; }
     }
 }

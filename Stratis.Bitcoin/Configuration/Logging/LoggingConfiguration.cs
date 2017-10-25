@@ -40,6 +40,8 @@ namespace Stratis.Bitcoin.Configuration.Logging
         /// <summary>Currently used data folder to determine path to logs.</summary>
         private static DataFolder folder;
 
+        public static DataFolder DataFolder {  get { return folder; } }
+
         /// <summary>Mappings of keys to class name spaces to be used when filtering log categories.</summary>
         private static readonly Dictionary<string, string> keyCategories = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {

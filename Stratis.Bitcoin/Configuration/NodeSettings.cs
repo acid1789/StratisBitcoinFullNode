@@ -178,8 +178,7 @@ namespace Stratis.Bitcoin.Configuration
                 nodeSettings.SetDefaultDataDir(Path.Combine("StratisNode", nodeSettings.Name), nodeSettings.Network);
             }
 
-            if (!Directory.Exists(nodeSettings.DataDir))
-                throw new ConfigurationException("Data directory does not exists");
+            Directory.CreateDirectory(nodeSettings.DataDir);
 
             if (nodeSettings.ConfigurationFile == null)
             {

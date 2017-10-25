@@ -262,14 +262,8 @@ namespace Stratis.Bitcoin.Features.MemoryPool
         /// <param name="message">The message payload.</param>
         private async Task SendMempoolPayloadAsync(Node node, MempoolPayload message)
         {
-            Guard.NotNull(node, nameof(node));
+            Guard.Assert(node == this.AttachedNode); // just in case
             this.logger.LogTrace("({0}:'{1}',{2}:'{3}')", nameof(node), node.RemoteSocketEndpoint, nameof(message), message.Command);
-            if (node != this.AttachedNode)
-            {
-                this.logger.LogDebug("Attached node '{0}' does not match the originating node '{1}'.", this.AttachedNode?.RemoteSocketEndpoint, node.RemoteSocketEndpoint);
-                this.logger.LogTrace("(-)[NODE_MISMATCH]");
-                return;
-            }
 
             if (!this.CanSend)
                 return;
@@ -327,14 +321,8 @@ namespace Stratis.Bitcoin.Features.MemoryPool
         /// <param name="invPayload">The inventory payload in the message.</param>
         private async Task ProcessInvAsync(Node node, InvPayload invPayload)
         {
-            Guard.NotNull(node, nameof(node));
+            Guard.Assert(node == this.AttachedNode); // just in case
             this.logger.LogTrace("({0}:'{1}',{2}.{3}.{4}:{5})", nameof(node), node.RemoteSocketEndpoint, nameof(invPayload), nameof(invPayload.Inventory), nameof(invPayload.Inventory.Count), invPayload.Inventory.Count);
-            if (node != this.AttachedNode)
-            {
-                this.logger.LogDebug("Attached node '{0}' does not match the originating node '{1}'.", this.AttachedNode?.RemoteSocketEndpoint, node.RemoteSocketEndpoint);
-                this.logger.LogTrace("(-)[NODE_MISMATCH]");
-                return;
-            }
 
             if (invPayload.Inventory.Count > ConnectionManager.MAX_INV_SZ)
             {
@@ -397,14 +385,8 @@ namespace Stratis.Bitcoin.Features.MemoryPool
         /// <param name="getDataPayload">The payload for the message.</param>
         private async Task ProcessGetDataAsync(Node node, GetDataPayload getDataPayload)
         {
-            Guard.NotNull(node, nameof(node));
             this.logger.LogTrace("({0}:'{1}',{2}.{3}.{4}:{5})", nameof(node), node.RemoteSocketEndpoint, nameof(getDataPayload), nameof(getDataPayload.Inventory), nameof(getDataPayload.Inventory.Count), getDataPayload.Inventory.Count);
-            if (node != this.AttachedNode)
-            {
-                this.logger.LogDebug("Attached node '{0}' does not match the originating node '{1}'.", this.AttachedNode?.RemoteSocketEndpoint, node.RemoteSocketEndpoint);
-                this.logger.LogTrace("(-)[NODE_MISMATCH]");
-                return;
-            }
+            Guard.Assert(node == this.AttachedNode); // just in case
 
             foreach (InventoryVector item in getDataPayload.Inventory.Where(inv => inv.Type.HasFlag(InventoryType.MSG_TX)))
             {
