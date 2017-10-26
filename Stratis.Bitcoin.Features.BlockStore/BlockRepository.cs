@@ -500,5 +500,13 @@ namespace Stratis.Bitcoin.Features.BlockStore
         {
             this.session.Dispose();
         }
+
+        public ChainedBlock GetBlockAtHeight(int height)
+        {
+            ChainedBlock block = HighestPersistedBlock;
+            while (block != null && block.Height > height)
+                block = block.Previous;
+            return block;
+        }
     }
 }
